@@ -1,6 +1,10 @@
 // Random seed
 randomize();
 
+// Language initialization
+language_init();
+language_import("txt_strings_en.json");
+
 crew_health_max  = 100;
 train_health_max = 100;
 
@@ -50,19 +54,19 @@ game_won = false;
 win_ending = "";
 
 debug_game_over_buttons = [
-    {label: "CREW HEALTH ZERO", reason: "The crew's health has reached zero."},
-    {label: "TRAIN HEALTH ZERO", reason: "The locomotive was wrecked beyond repair."},
-    {label: "NO REPAIR TOOLS", reason: "A repair was needed, but no tools were available."},
-    {label: "NO FOOD", reason: "The crew ran out of food."},
-    {label: "NO WATER", reason: "The crew ran out of water."},
-    {label: "OUT OF FUEL", reason: "The locomotive ran out of fuel for two consecutive events."}
+    {label: "LABEL_CREW_ZERO", reason: "REASON_CREW_ZERO"},
+    {label: "LABEL_TRAIN_ZERO", reason: "REASON_TRAIN_ZERO"},
+    {label: "LABEL_NO_TOOLS", reason: "REASON_NO_TOOLS"},
+    {label: "LABEL_NO_FOOD", reason: "REASON_NO_FOOD"},
+    {label: "LABEL_NO_WATER", reason: "REASON_NO_WATER"},
+    {label: "LABEL_NO_FUEL", reason: "REASON_NO_FUEL"}
 ];
 
 debug_win_condition_button = [
-    {label: "WIN GAME, NORMAL ENDING", ending: "Normal Ending"},
-    {label: "WIN GAME, INDIGENOUS ENDING", ending: "Indigenous Ending"},
-    {label: "WIN GAME, BOTANIST ENDING", ending: "Botanist Ending"},
-    {label: "WIN GAME, DOCTOR ENDING", ending: "Doctor Ending"}
+    {label: "LABEL_NORMAL_WIN", ending: "ENDING_NORMAL_WIN"},
+    {label: "LABEL_INDIGENOUS_WIN", ending: "ENDING_INDIGENOUS_WIN"},
+    {label: "LABEL_BOTANIST_WIN", ending: "ENDING_BOTANIST_WIN"},
+    {label: "LABEL_DOCTOR_WIN", ending: "ENDING_DOCTOR_WIN"}
 ];
 
 // Consecutive events with zero fuel

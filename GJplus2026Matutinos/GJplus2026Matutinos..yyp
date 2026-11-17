@@ -10,7 +10,9 @@
   },
   "defaultScriptType":1,
   "Folders":[
+    {"$GMFolder":"","%Name":"Notes","folderPath":"folders/Notes.yy","name":"Notes","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Scripts","folderPath":"folders/Scripts.yy","name":"Scripts","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"SFX","folderPath":"folders/SFX.yy","name":"SFX","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Sprites","folderPath":"folders/Sprites.yy","name":"Sprites","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
@@ -18,6 +20,8 @@
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"sprt_game_over","CopyToMask":-1,"filePath":"datafiles","name":"sprt_game_over","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"sprt_trilho","CopyToMask":-1,"filePath":"datafiles","name":"sprt_trilho","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"txt_strings_en.json","CopyToMask":-1,"filePath":"datafiles","name":"txt_strings_en.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"txt_strings_en.json","CopyToMask":-1,"filePath":"datafiles","name":"txt_strings_en.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,
   "LibraryEmitters":[],
@@ -26,9 +30,13 @@
   },
   "name":"GJplus2026Matutinos.",
   "resources":[
+    {"id":{"name":"Extension1","path":"extensions/Extension1/Extension1.yy",},},
     {"id":{"name":"obj_train_visual","path":"objects/obj_train_visual/obj_train_visual.yy",},},
     {"id":{"name":"obj_travel_manager","path":"objects/obj_travel_manager/obj_travel_manager.yy",},},
     {"id":{"name":"rm_main","path":"rooms/rm_main/rm_main.yy",},},
+    {"id":{"name":"scr_language_import","path":"scripts/scr_language_import/scr_language_import.yy",},},
+    {"id":{"name":"scr_language_init","path":"scripts/scr_language_init/scr_language_init.yy",},},
+    {"id":{"name":"scr_language_lang","path":"scripts/scr_language_lang/scr_language_lang.yy",},},
     {"id":{"name":"sfx_howling","path":"sounds/sfx_howling/sfx_howling.yy",},},
     {"id":{"name":"sfx_loss","path":"sounds/sfx_loss/sfx_loss.yy",},},
     {"id":{"name":"sfx_mainmusic","path":"sounds/sfx_mainmusic/sfx_mainmusic.yy",},},

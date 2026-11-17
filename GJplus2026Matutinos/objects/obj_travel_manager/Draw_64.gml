@@ -16,16 +16,16 @@ if (travel_state == "menu") {
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     draw_set_color(c_white);
-    draw_text(menu_gui_w / 2, menu_gui_h / 2 - 75, "Madeira Mamore's Railroad");
+    draw_text(menu_gui_w / 2, menu_gui_h / 2 - 75, lang("MENU_TITLE"));
     draw_set_color(c_gray);
-    draw_text(menu_gui_w / 2, menu_gui_h / 2 - 25, "Lead the expedition to safety");
+    draw_text(menu_gui_w / 2, menu_gui_h / 2 - 25, lang("MENU_SUBTITLE"));
 
     draw_set_color(c_white);
     draw_rectangle(menu_button_left, menu_button_top, menu_button_left + 240, menu_button_top + 64, false);
     draw_set_color(c_black);
-    draw_text(menu_gui_w / 2, menu_button_top + 32, "PLAY");
+    draw_text(menu_gui_w / 2, menu_button_top + 32, lang("MENU_PLAY"));
     draw_set_color(c_gray);
-    draw_text(menu_gui_w / 2, menu_button_top + 98, "Click PLAY or press Enter");
+    draw_text(menu_gui_w / 2, menu_button_top + 98, lang("MENU_CLICK_PLAY");
 
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
@@ -615,7 +615,7 @@ if (debug_menu_open && !game_over && !game_won) {
         draw_text(
             debug_button_left + debug_button_width / 2,
             button_top + debug_button_height / 2,
-            debug_game_over_buttons[i].label
+           lang(debug_game_over_buttons[i].label)
         );
     }
 
@@ -643,7 +643,7 @@ if (debug_menu_open && !game_over && !game_won) {
         draw_text(
             debug_button_left + debug_button_width / 2,
             win_button_top + debug_button_height / 2,
-            debug_win_condition_button[i].label
+            lang(debug_win_condition_button[i].label)
         );
     }
 

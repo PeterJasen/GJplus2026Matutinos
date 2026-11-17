@@ -1,0 +1,173 @@
+{
+
+    "LABEL_CREW_ZERO" : "CREW HEALTH ZERO",
+    "LABEL_TRAIN_ZERO" : "TRAIN HEALTH ZERO",
+    "LABEL_NO_TOOLS" : "NO REAPIR TOOLS",
+    "LABEL_NO_FOOD" : "NO FOOD",
+    "LABEL_NO_WATER" : "NO WATER",
+    "LABEL_NO_FUEL" : "OUT OF FUEL",
+
+};
+
+{
+
+    "REASON_CREW_ZERO" : "The crew's health has reached zero.",
+    "REASON_TRAIN_ZERO" : "The locomotive was wrecked beyond repair.",
+    "REASON_NO_TOOLS" : "A repair was needed, but no tools were available.",
+    "REASON_NO_FOOD" : "The crew ran out of food.",
+    "REASON_NO_WATER" : "The crew ran out of water.", 
+    "REASON_NO_FUEL" : "The locomotive ran out of fuel for two consecutive events.",
+
+};
+
+{
+
+    "LABEL_NORMAL_WIN" : "WIN GAME, NORMAL ENDING",
+    "LABEL_INDIGENOUS_WIN" : "WIN GAME, INDIGENOUS ENDING",
+    "LABEL_BOTANIST_WIN" : "WIN GAME, BOTANIST ENDING",
+    "LABEL_DOCTOR_WIN" : "WIN GAME, DOCTOR ENDING",
+
+};
+
+{
+
+    "ENDING_NORMAL_WIN" : "Normal Ending",
+    "ENDING_INDIGENOUS_WIN" : "Indigenous Ending",
+    "ENDING_BOTANIST_WIN" : "Botanist Ending",
+    "ENDING_DOCTOR_WIN" : "Doctor Ending",
+
+};
+
+minor_events_text = {
+
+    "MINOR_RAIN_TEXT": "The Afternoon Rain",
+    "MINOR_RAIN_DESCRIPTION": "Rain soaks the supplies and damages equipment.",
+    "MINOR_MOSQUITO_TEXT": "Mosquitoes at Dusk",
+    "MINOR_MOSQUITO_DESCRIPTION": "A crew member develops a fever.",
+    "MINOR_TREE_TEXT": "A Fallen Giant",
+    "MINOR_TREE_DESCRIPTION": "A massive tree blocks the tracks.",
+    "MINOR_FIND_SUPPLIES_TEXT": "The Forgotten Supplies",
+    "MINOR_FIND_SUPPLIES_DESCRIPTION": "The crew discovers abandoned provisions.",
+    "MINOR_MURKY_WATER_TEXT": "The Murky Water",
+    "MINOR_MURKY_WATER_DESCRIPTION": "Some drinking water has become contaminated.",
+    "MINOR_VEGETATION_TEXT": "An Unusual Sound",
+    "MINOR_VEGETATION_DESCRIPTION": "Something moves through the vegetation... But the crew discovers usable fuel nearby.",
+    "MINOR_RAIN_CATCH_TEXT": "A Welcome Downpour",
+    "MINOR_RAIN_CATCH_DESCRIPTION": "The crew collects rainwater in every barrel they can find.",
+    "MINOR_WOODPILE_TEXT": "The Abandoned Woodpile",
+    "MINOR_WOODPILE_DESCRIPTION": "Firewood stacked beside the tracks by a previous crew.",
+    "MINOR_LOOSE_CARGO_TEXT": "Unsecured Cargo",
+    "MINOR_LOOSE_CARGO_DESCRIPTION": "A sudden jolt sends unsecured supplies crashing against the carriage walls.",
+    "MINOR_TRACKSIDE_CACHE_TEXT": "A Small Discovery",
+    "MINOR_TRACKSIDE_CACHE_DESCRIPTION": "The crew discovers a forgotten crate of useful equipment beside the railway.",
+    "MINOR_FOOD_SHORTAGE_TEXT": "Empty Food Supplies",
+    "MINOR_FOOD_SHORTAGE_DESCRIPTION": "The food stores are running dangerously low.",
+    "MINOR_WATER_SHORTAGE_TEXT": "Water Supplies Running Low",
+    "MINOR_WATER_SHORTAGE_DESCRIPTION": "The remaining drinking water will not last much longer.",
+    "MINOR_PROVISION_CRATE_TEXT": "An Abandoned Provision Crate",
+    "MINOR_PROVISION_CRATE_DESCRIPTION": "A sealed crate has been left beside the railway. Some of its contents are still usable.",
+    "MINOR_LEAKING_CASK_TEXT": "A Leaking Water Cask",
+    "MINOR_LEAKING_CASK_DESCRIPTION": "One of the water barrels has cracked. Several litres have already been lost."
+
+};
+
+major_events_text = {
+
+    "MAJOR_BROKEN_ENGINE_TEXT": "The Engine Breaks Down",
+    "MAJOR_BROKEN_ENGINE_DESCRIPTION": "The locomotive has suffered a mechanical failure. The crew needs spare tools to get it moving again.",
+    "MAJOR_BROKEN_ENGINE_CHOICE_1_TEXT": "Repair the engine properly",
+    "MAJOR_BROKEN_ENGINE_CHOICE_1_OUTCOME_1_DESCRIPTION": "The engine roars back to life.",
+    "MAJOR_BROKEN_ENGINE_CHOICE_2_TEXT": "Improvise a rough patch",
+    "MAJOR_BROKEN_ENGINE_CHOICE_2_OUTCOME_1_DESCRIPTION": "The patch holds, for now.",
+    "MAJOR_BROKEN_ENGINE_CHOICE_2_OUTCOME_2_DESCRIPTION": "The patch barely holds and the engine is badly strained.",
+    "MAJOR_EMBANKMENT_TEXT": "The Unstable Embankment",
+    "MAJOR_EMBANKMENT_DESCRIPTION": "The ground beneath the railway is collapsing.",
+    "MAJOR_EMBANKMENT_CHOICE_1_TEXT": "Reinforce the embankment",
+    "MAJOR_EMBANKMENT_CHOICE_1_OUTCOME_1_DESCRIPTION": "The repairs hold.",
+    "MAJOR_EMBANKMENT_CHOICE_1_OUTCOME_2_DESCRIPTION": "The repairs fail. Someone gets hurt.",
+    "MAJOR_EMBANKMENT_CHOICE_2_TEXT": "Attempt to cross slowly",
+    "MAJOR_EMBANKMENT_CHOICE_2_OUTCOME_1_DESCRIPTION": "The train crosses safely.",
+    "MAJOR_EMBANKMENT_CHOICE_2_OUTCOME_2_DESCRIPTION": "The train suffers damage.",
+    "MAJOR_EMBANKMENT_CHOICE_3_TEXT": "Stop and wait",
+    "MAJOR_EMBANKMENT_CHOICE_3_OUTCOME_1_DESCRIPTION": "The crew waits for safer conditions.",
+    "MAJOR_FEVER_TEXT": "Fever in the Passenger Car",
+    "MAJOR_FEVER_DESCRIPTION": "A passenger has developed a severe fever.",
+    "MAJOR_FEVER_CHOICE_1_TEXT": "Use medical supplies",
+    "MAJOR_FEVER_CHOICE_1_OUTCOME_1_DESCRIPTION": "The treatment helps the passenger.",
+    "MAJOR_FEVER_CHOICE_2_TEXT": "Continue travelling",
+    "MAJOR_FEVER_CHOICE_2_OUTCOME_1_DESCRIPTION": "The passenger's condition worsens.",
+    "MAJOR_FEVER_CHOICE_3_TEXT": "Rest for the day",
+    "MAJOR_FEVER_CHOICE_3_OUTCOME_1_DESCRIPTION": "The passenger recovers somewhat.",
+    "MAJOR_RIVERBANK_TEXT": "Signs Along the Riverbank",
+    "MAJOR_RIVERBANK_DESCRIPTION": "A maintained trail leads into the forest. Someone lives nearby.",
+    "MAJOR_RIVERBANK_CHOICE_1_TEXT": "Observe from a respectful distance",
+    "MAJOR_RIVERBANK_CHOICE_1_OUTCOME_1_DESCRIPTION": "The crew records the trail and leaves it undisturbed.",
+    "MAJOR_RIVERBANK_CHOICE_2_TEXT": "Continue without approaching",
+    "MAJOR_RIVERBANK_CHOICE_2_OUTCOME_1_DESCRIPTION": "The train continues along the railway.",
+    "MAJOR_ROARING_TEXT": "The Roaring Madeira",
+    "MAJOR_ROARING_DESCRIPTION": "The river's rapids shake the cargo as the train passes nearby.",
+    "MAJOR_ROARING_CHOICE_1_TEXT": "Secure the cargo",
+    "MAJOR_ROARING_CHOICE_1_OUTCOME_1_DESCRIPTION": "The cargo is secured.",
+    "MAJOR_ROARING_CHOICE_2_TEXT": "Continue immediately",
+    "MAJOR_ROARING_CHOICE_2_OUTCOME_1_DESCRIPTION": "Nothing is lost.",
+    "MAJOR_ROARING_CHOICE_2_OUTCOME_2_DESCRIPTION": "Some supplies fall from the cargo.",
+    "MAJOR_OLD_CAMP_TEXT": "The Old Work Camp",
+    "MAJOR_OLD_CAMP_DESCRIPTION": "The crew discovers the remains of an old construction camp.",
+    "MAJOR_OLD_CAMP_CHOICE_1_TEXT": "Search the camp",
+    "MAJOR_OLD_CAMP_CHOICE_1_OUTCOME_1_DESCRIPTION": "Useful equipment and food are recovered.",
+    "MAJOR_OLD_CAMP_CHOICE_1_OUTCOME_2_DESCRIPTION": "The camp has already been emptied.",
+    "MAJOR_OLD_CAMP_CHOICE_1_OUTCOME_3_DESCRIPTION": "An accident injures a crew member.",
+    "MAJOR_OLD_CAMP_CHOICE_2_TEXT": "Leave the camp",
+    "MAJOR_OLD_CAMP_CHOICE_2_OUTCOME_1_DESCRIPTION": "The train continues its journey.",
+    "MAJOR_RIVER_BEND_TEXT": "A Quiet Bend in the Madeira",
+    "MAJOR_RIVER_BEND_DESCRIPTION": "The river runs calm here. The barrels could use a refill.",
+    "MAJOR_RIVER_BEND_CHOICE_1_TEXT": "Boil the water before storing it",
+    "MAJOR_RIVER_BEND_CHOICE_1_OUTCOME_1_DESCRIPTION": "The water is clean and the barrels are full.",
+    "MAJOR_RIVER_BEND_CHOICE_2_TEXT": "Fill the barrels straight from the river",
+    "MAJOR_RIVER_BEND_CHOICE_2_OUTCOME_1_DESCRIPTION": "The water looks clear enough. The barrels are full.",
+    "MAJOR_RIVER_BEND_CHOICE_2_OUTCOME_2_DESCRIPTION": "The water was foul. Most of it is unusable and the crew falls ill.",
+    "MAJOR_RIVER_BEND_CHOICE_3_TEXT": "Continue without stopping",
+    "MAJOR_RIVER_BEND_CHOICE_3_OUTCOME_1_DESCRIPTION": "The train rolls on past the river.",
+    "MAJOR_DERELICT_LOCO_TEXT": "The Derelict Locomotive",
+    "MAJOR_DERELICT_LOCO_DESCRIPTION": "A rusted locomotive sits abandoned on a siding. Its tender may still hold fuel.",
+    "MAJOR_DERELICT_LOCO_CHOICE_1_TEXT": "Salvage fuel from the tender",
+    "MAJOR_DERELICT_LOCO_CHOICE_1_OUTCOME_1_DESCRIPTION": "The tender still holds plenty of usable fuel.",
+    "MAJOR_DERELICT_LOCO_CHOICE_1_OUTCOME_2_DESCRIPTION": "Mostly rust and ash, but a little fuel is salvaged.",
+    "MAJOR_DERELICT_LOCO_CHOICE_1_OUTCOME_3_DESCRIPTION": "Part of the wreck collapses. Someone gets hurt, but some fuel is saved.",
+    "MAJOR_DERELICT_LOCO_CHOICE_2_TEXT": "Leave it alone",
+    "MAJOR_DERELICT_LOCO_CHOICE_2_OUTCOME_1_DESCRIPTION": "The crew moves on.",
+    "MAJOR_BOILER_PRESSURE_TEXT": "Dangerous Boiler Pressure",
+    "MAJOR_BOILER_PRESSURE_DESCRIPTION": "The boiler pressure is rising beyond its normal operating range. The engineer needs to act quickly.",
+    "MAJOR_BOILER_PRESSURE_CHOICE_1_TEXT": "Vent the excess pressure",
+    "MAJOR_BOILER_PRESSURE_CHOICE_1_OUTCOME_1_DESCRIPTION": "The engineer releases the pressure. The boiler returns to normal.",
+    "MAJOR_BOILER_PRESSURE_CHOICE_2_TEXT": "Reinforce the valve",
+    "MAJOR_BOILER_PRESSURE_CHOICE_2_OUTCOME_1_DESCRIPTION": "The reinforcement holds. The engine is safe.",
+    "MAJOR_BOILER_PRESSURE_CHOICE_2_OUTCOME_2_DESCRIPTION": "The valve gives way during the repair. The train suffers damage.",
+    "MAJOR_BOILER_PRESSURE_CHOICE_3_TEXT": "Continue travelling and hope for the best",
+    "MAJOR_BOILER_PRESSURE_CHOICE_3_OUTCOME_1_DESCRIPTION": "The pressure eventually stabilizes.",
+    "MAJOR_BOILER_PRESSURE_CHOICE_3_OUTCOME_2_DESCRIPTION": "The boiler overheats. The locomotive suffers serious damage.",
+    "MAJOR_TRACK_WASHOUT_TEXT": "A Washed-Out Railway",
+    "MAJOR_TRACK_WASHOUT_DESCRIPTION": "Heavy rain has damaged the ground supporting the tracks. The locomotive cannot proceed safely without a decision.",
+    "MAJOR_TRACK_WASHOUT_CHOICE_1_TEXT": "Repair the damaged section",
+    "MAJOR_TRACK_WASHOUT_CHOICE_1_OUTCOME_1_DESCRIPTION": "The crew reinforces the railway successfully.",
+    "MAJOR_TRACK_WASHOUT_CHOICE_1_OUTCOME_2_DESCRIPTION": "The ground gives way during the work. The locomotive is damaged.",
+    "MAJOR_TRACK_WASHOUT_CHOICE_2_TEXT": "Wait for the water to recede",
+    "MAJOR_TRACK_WASHOUT_CHOICE_2_OUTCOME_1_DESCRIPTION": "The crew waits for safer conditions, consuming precious provisions.",
+    "MAJOR_TRACK_WASHOUT_CHOICE_3_TEXT": "Cross slowly using extra fuel",
+    "MAJOR_TRACK_WASHOUT_CHOICE_3_OUTCOME_1_DESCRIPTION": "The locomotive crosses the damaged section carefully.",
+    "MAJOR_TRACK_WASHOUT_CHOICE_3_OUTCOME_2_DESCRIPTION": "The weakened ground damages the locomotive during the crossing."
+
+};
+
+resources_text = {
+
+    "RESOURCE_FOOD": "Food",
+    "RESOURCE_TOOLS": "Repair Tools",
+    "RESOURCE_CREW_HEALTH": "Crew Health",
+    "RESOURCE_FUEL": "Fuel",
+    "RESOURCE_TRAIN_HEALTH": "Train Health",
+    "RESOURCE_MEDICINE": "Medicine",
+    "RESOURCE_WATER": "Water"
+
+};
+

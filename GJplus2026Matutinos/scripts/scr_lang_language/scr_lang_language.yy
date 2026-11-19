@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"scr_language_lang",
+  "%Name":"scr_lang_language",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scr_language_lang",
+  "name":"scr_lang_language",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

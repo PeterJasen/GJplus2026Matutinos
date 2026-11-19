@@ -3,36 +3,37 @@ randomize();
 
 // Language initialization
 language_init();
-language_import("txt_strings_en.json");
+language_import("txt_strings_pt_br.json");
+global.current_lingo = "pt_br";
 
 crew_health_max  = 100;
 train_health_max = 100;
 
-heal_amount = 10;        // 1 medicine = +20 crew health, 1 tool = +20 train health
+heal_amount = 10;
 
-coal_per_event  = 1;     // fuel burned after every event
-ration_interval = 3;     // the crew eats and drinks every 3 events
+coal_per_event  = 1;
+ration_interval = 3;
 ration_food = 3;
 ration_water = 4;
 events_since_ration = 0;
 
-// Major-event selection chance (35% of event rolls, when eligible)
+// Major-event selection chance
 major_event_chance = 45;
 
-// After a failed ration check the crew gets ONE last chance:
+// Ration warning
 ration_warning = false;
 ration_warning_text = "";
 
 // Intro cutscene
 intro_duration = 20;
 intro_timer = 0;
-global.train_intro = 1;  // 0 = off-screen left, 1 = final position
+global.train_intro = 1;
 
 // Debug menu
 debug_menu_open = false;
 debug_toggle_keys = [vk_backspace];
 
-// End sounds must only start once
+// End sounds
 audio_end_sound_played = false;
 end_sound_played = false;
 
@@ -45,7 +46,7 @@ finale_duration = 8;
 finale_timer = 0;
 finale_from_x = 0;
 finale_end_x = room_width + 600;
-finale_ending = "Normal Ending";
+finale_ending = "ENDING_NORMAL_WIN";
 
 // Game over / win state
 game_over = false;
@@ -73,11 +74,10 @@ debug_win_condition_button = [
 coal_zero_events = 0;
 
 // Death animation
-// Step Event should animate this state, then set game_over = true
-// and travel_state = "game_over" when the animation finishes.
 death_timer = 0;
 death_duration = 6;
 death_start_x = 0;
+
 
 // ============================================================
 // STARTING STATE
@@ -97,8 +97,8 @@ make_starting_resources = function() {
 
 make_starting_flags = function() {
     return {
-		found_provision_crate: false,
-		found_leaking_cask: false,
+        found_provision_crate: false,
+        found_leaking_cask: false,
         marked_old_trail: false,
         found_supply_camp: false,
         repaired_engine: false,
@@ -122,13 +122,13 @@ make_starting_flags = function() {
 resources = make_starting_resources();
 world_flags = make_starting_flags();
 
-// Journey progress (number of completed events)
+// Journey progress
 journey_leg = 0;
 
 // Travel configuration
 travel_state = "menu";
 travel_elapsed = 0;
-next_event_time = random_range(4, 8);
+next_event_time = 0;
 last_event_id = "";
 
 // Event message and feedback
@@ -137,6 +137,11 @@ message_timer = 0;
 event_feedback = [];
 feedback_timer = 0;
 current_event = undefined;
+
+
+// ============================================================
+// EVENT REQUIREMENTS
+// ============================================================
 
 event_is_available = function(_event) {
 
@@ -204,8 +209,11 @@ event_is_available = function(_event) {
     return true;
 };
 
-// Plays a sound with a chosen volume.
-// Returns the sound instance, so it can be controlled later.
+
+// ============================================================
+// SOUND HELPERS
+// ============================================================
+
 play_game_sound = function(_sound, _loop, _volume) {
 
     var sound_instance = audio_play_sound(_sound, 1, _loop);
@@ -215,16 +223,18 @@ play_game_sound = function(_sound, _loop, _volume) {
     return sound_instance;
 };
 
+
 // ============================================================
 // MINOR EVENTS
 // ============================================================
 
 minor_events = [
+
     {
         id: "rain",
         type: "minor",
-        title: "The Afternoon Rain",
-        description: "Rain soaks the supplies and damages equipment.",
+        title: lang("MINOR_RAIN_TEXT"),
+        description: lang("MINOR_RAIN_DESCRIPTION"),
         weight: 8,
         min_progress: 0,
         min_resources: {},
@@ -238,11 +248,12 @@ minor_events = [
         set_flag: "",
         sound: "sfx_negative"
     },
+
     {
         id: "mosquito",
         type: "minor",
-        title: "Mosquitoes at Dusk",
-        description: "A crew member develops a fever.",
+        title: lang("MINOR_MOSQUITO_TEXT"),
+        description: lang("MINOR_MOSQUITO_DESCRIPTION"),
         weight: 7,
         min_progress: 1,
         min_resources: {},
@@ -255,11 +266,12 @@ minor_events = [
         set_flag: "",
         sound: "sfx_negative"
     },
+
     {
         id: "tree",
         type: "minor",
-        title: "A Fallen Giant",
-        description: "A massive tree blocks the tracks.",
+        title: lang("MINOR_TREE_TEXT"),
+        description: lang("MINOR_TREE_DESCRIPTION"),
         weight: 6,
         min_progress: 0,
         min_resources: {tools: 2},
@@ -274,11 +286,12 @@ minor_events = [
         set_flag: "",
         sound: "sfx_negative"
     },
+
     {
         id: "find_supplies",
         type: "minor",
-        title: "The Forgotten Supplies",
-        description: "The crew discovers abandoned provisions.",
+        title: lang("MINOR_FIND_SUPPLIES_TEXT"),
+        description: lang("MINOR_FIND_SUPPLIES_DESCRIPTION"),
         weight: 5,
         min_progress: 2,
         min_resources: {},
@@ -292,11 +305,12 @@ minor_events = [
         set_flag: "found_supply_camp",
         sound: "sfx_positive"
     },
+
     {
         id: "murky_water",
         type: "minor",
-        title: "The Murky Water",
-        description: "Some drinking water has become contaminated.",
+        title: lang("MINOR_MURKY_WATER_TEXT"),
+        description: lang("MINOR_MURKY_WATER_DESCRIPTION"),
         weight: 8,
         min_progress: 1,
         min_resources: {},
@@ -309,11 +323,12 @@ minor_events = [
         set_flag: "",
         sound: "sfx_negative"
     },
+
     {
         id: "vegetation",
         type: "minor",
-        title: "An Unusual Sound",
-        description: "Something moves through the vegetation... But the crew discovers usable fuel nearby.",
+        title: lang("MINOR_VEGETATION_TEXT"),
+        description: lang("MINOR_VEGETATION_DESCRIPTION"),
         weight: 6,
         min_progress: 3,
         min_resources: {},
@@ -326,11 +341,12 @@ minor_events = [
         set_flag: "",
         sound: "sfx_positive"
     },
+
     {
         id: "rain_catch",
         type: "minor",
-        title: "A Welcome Downpour",
-        description: "The crew collects rainwater in every barrel they can find.",
+        title: lang("MINOR_RAIN_CATCH_TEXT"),
+        description: lang("MINOR_RAIN_CATCH_DESCRIPTION"),
         weight: 5,
         min_progress: 1,
         min_resources: {},
@@ -343,11 +359,12 @@ minor_events = [
         set_flag: "",
         sound: "sfx_positive"
     },
+
     {
         id: "woodpile",
         type: "minor",
-        title: "The Abandoned Woodpile",
-        description: "Firewood stacked beside the tracks by a previous crew.",
+        title: lang("MINOR_WOODPILE_TEXT"),
+        description: lang("MINOR_WOODPILE_DESCRIPTION"),
         weight: 4,
         min_progress: 2,
         min_resources: {},
@@ -360,11 +377,12 @@ minor_events = [
         set_flag: "found_woodpile",
         sound: "sfx_positive"
     },
+
     {
         id: "loose_cargo",
         type: "minor",
-        title: "Unsecured Cargo",
-        description: "A sudden jolt sends unsecured supplies crashing against the carriage walls.",
+        title: lang("MINOR_LOOSE_CARGO_TEXT"),
+        description: lang("MINOR_LOOSE_CARGO_DESCRIPTION"),
         weight: 6,
         min_progress: 1,
         min_resources: {},
@@ -378,11 +396,12 @@ minor_events = [
         set_flag: "",
         sound: "sfx_negative"
     },
+
     {
         id: "trackside_cache",
         type: "minor",
-        title: "A Small Discovery",
-        description: "The crew discovers a forgotten crate of useful equipment beside the railway.",
+        title: lang("MINOR_TRACKSIDE_CACHE_TEXT"),
+        description: lang("MINOR_TRACKSIDE_CACHE_DESCRIPTION"),
         weight: 4,
         min_progress: 3,
         min_resources: {},
@@ -396,12 +415,12 @@ minor_events = [
         set_flag: "found_trackside_cache",
         sound: "sfx_positive"
     },
-    // Shortage warnings are minor, automatic events, so they belong in this pool.
+
     {
         id: "food_shortage",
         type: "minor",
-        title: "Empty Food Supplies",
-        description: "The food stores are running dangerously low.",
+        title: lang("MINOR_FOOD_SHORTAGE_TEXT"),
+        description: lang("MINOR_FOOD_SHORTAGE_DESCRIPTION"),
         weight: 2,
         min_progress: 3,
         min_resources: {},
@@ -412,11 +431,12 @@ minor_events = [
         set_flag: "",
         sound: "sfx_negative"
     },
+
     {
         id: "water_shortage",
         type: "minor",
-        title: "Water Supplies Running Low",
-        description: "The remaining drinking water will not last much longer.",
+        title: lang("MINOR_WATER_SHORTAGE_TEXT"),
+        description: lang("MINOR_WATER_SHORTAGE_DESCRIPTION"),
         weight: 2,
         min_progress: 3,
         min_resources: {},
@@ -427,53 +447,57 @@ minor_events = [
         set_flag: "",
         sound: "sfx_negative"
     },
-	{
-    id: "provision_crate",
-    type: "minor",
-    title: "An Abandoned Provision Crate",
-    description: "A sealed crate has been left beside the railway. Some of its contents are still usable.",
-    weight: 5,
-    min_progress: 2,
-    min_resources: {},
-    max_resources: {},
-    required_flags: [],
-    forbidden_flags: ["found_provision_crate"],
-    effects: [
-        {resource: "food", amount: 3},
-        {resource: "tools", amount: 1}
-    ],
-    set_flag: "found_provision_crate",
-    sound: "sfx_positive"
-	},
-	{
-	    id: "leaking_cask",
-	    type: "minor",
-	    title: "A Leaking Water Cask",
-	    description: "One of the water barrels has cracked. Several litres have already been lost.",
-	    weight: 6,
-	    min_progress: 2,
-	    min_resources: {},
-	    max_resources: {},
-	    required_flags: [],
-	    forbidden_flags: ["found_leaking_cask"],
-	    effects: [
-	        {resource: "water", amount: -3}
-	    ],
-	    set_flag: "found_leaking_cask",
-	    sound: "sfx_negative"
-},
+
+    {
+        id: "provision_crate",
+        type: "minor",
+        title: lang("MINOR_PROVISION_CRATE_TEXT"),
+        description: lang("MINOR_PROVISION_CRATE_DESCRIPTION"),
+        weight: 5,
+        min_progress: 2,
+        min_resources: {},
+        max_resources: {},
+        required_flags: [],
+        forbidden_flags: ["found_provision_crate"],
+        effects: [
+            {resource: "food", amount: 3},
+            {resource: "tools", amount: 1}
+        ],
+        set_flag: "found_provision_crate",
+        sound: "sfx_positive"
+    },
+
+    {
+        id: "leaking_cask",
+        type: "minor",
+        title: lang("MINOR_LEAKING_CASK_TEXT"),
+        description: lang("MINOR_LEAKING_CASK_DESCRIPTION"),
+        weight: 6,
+        min_progress: 2,
+        min_resources: {},
+        max_resources: {},
+        required_flags: [],
+        forbidden_flags: ["found_leaking_cask"],
+        effects: [
+            {resource: "water", amount: -3}
+        ],
+        set_flag: "found_leaking_cask",
+        sound: "sfx_negative"
+    }
 ];
+
 
 // ============================================================
 // MAJOR EVENTS
 // ============================================================
 
 major_events = [
+
     {
         id: "broken_engine",
-        title: "The Engine Breaks Down",
+        title: lang("MAJOR_BROKEN_ENGINE_TEXT"),
         type: "major",
-        description: "The locomotive has suffered a mechanical failure. The crew needs spare tools to get it moving again.",
+        description: lang("MAJOR_BROKEN_ENGINE_DESCRIPTION"),
         requires_repair: true,
         weight: 5,
         min_progress: 3,
@@ -484,7 +508,7 @@ major_events = [
         sound: "sfx_negative",
         choices: [
             {
-                text: "Repair the engine properly",
+                text: lang("MAJOR_BROKEN_ENGINE_CHOICE_1_TEXT"),
                 min_resources: {tools: 2},
                 max_resources: {},
                 min_progress: 0,
@@ -494,7 +518,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The engine roars back to life.",
+                        description: lang("MAJOR_BROKEN_ENGINE_CHOICE_1_OUTCOME_1"),
                         effects: [
                             {resource: "tools", amount: -2}
                         ],
@@ -504,7 +528,7 @@ major_events = [
                 ]
             },
             {
-                text: "Improvise a rough patch",
+                text: lang("MAJOR_BROKEN_ENGINE_CHOICE_2_TEXT"),
                 min_resources: {tools: 1},
                 max_resources: {},
                 min_progress: 0,
@@ -514,7 +538,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 60,
-                        description: "The patch holds, for now.",
+                        description: lang("MAJOR_BROKEN_ENGINE_CHOICE_2_OUTCOME_1"),
                         effects: [
                             {resource: "tools", amount: -1},
                             {resource: "train_health", amount: -5}
@@ -524,7 +548,7 @@ major_events = [
                     },
                     {
                         weight: 40,
-                        description: "The patch barely holds and the engine is badly strained.",
+                        description: lang("MAJOR_BROKEN_ENGINE_CHOICE_2_OUTCOME_2"),
                         effects: [
                             {resource: "tools", amount: -1},
                             {resource: "train_health", amount: -15}
@@ -536,11 +560,12 @@ major_events = [
             }
         ]
     },
+
     {
         id: "embankment",
         type: "major",
-        title: "The Unstable Embankment",
-        description: "The ground beneath the railway is collapsing.",
+        title: lang("MAJOR_EMBANKMENT_TEXT"),
+        description: lang("MAJOR_EMBANKMENT_DESCRIPTION"),
         weight: 8,
         min_progress: 2,
         min_resources: {},
@@ -550,7 +575,7 @@ major_events = [
         sound: "sfx_negative",
         choices: [
             {
-                text: "Reinforce the embankment",
+                text: lang("MAJOR_EMBANKMENT_CHOICE_1_TEXT"),
                 min_resources: {tools: 2},
                 max_resources: {},
                 min_progress: 0,
@@ -560,7 +585,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 75,
-                        description: "The repairs hold.",
+                        description: lang("MAJOR_EMBANKMENT_CHOICE_1_OUTCOME_1"),
                         effects: [
                             {resource: "tools", amount: -2}
                         ],
@@ -569,7 +594,7 @@ major_events = [
                     },
                     {
                         weight: 25,
-                        description: "The repairs fail. Someone gets hurt.",
+                        description: lang("MAJOR_EMBANKMENT_CHOICE_1_OUTCOME_2"),
                         effects: [
                             {resource: "tools", amount: -2},
                             {resource: "crew_health", amount: -5}
@@ -580,7 +605,7 @@ major_events = [
                 ]
             },
             {
-                text: "Attempt to cross slowly",
+                text: lang("MAJOR_EMBANKMENT_CHOICE_2_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -590,7 +615,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 65,
-                        description: "The train crosses safely.",
+                        description: lang("MAJOR_EMBANKMENT_CHOICE_2_OUTCOME_1"),
                         effects: [
                             {resource: "fuel", amount: -2}
                         ],
@@ -599,7 +624,7 @@ major_events = [
                     },
                     {
                         weight: 35,
-                        description: "The train suffers damage.",
+                        description: lang("MAJOR_EMBANKMENT_CHOICE_2_OUTCOME_2"),
                         effects: [
                             {resource: "tools", amount: -2},
                             {resource: "train_health", amount: -20}
@@ -610,7 +635,7 @@ major_events = [
                 ]
             },
             {
-                text: "Stop and wait",
+                text: lang("MAJOR_EMBANKMENT_CHOICE_3_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -620,7 +645,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The crew waits for safer conditions.",
+                        description: lang("MAJOR_EMBANKMENT_CHOICE_3_OUTCOME_1"),
                         effects: [
                             {resource: "food", amount: -5}
                         ],
@@ -631,11 +656,12 @@ major_events = [
             }
         ]
     },
+
     {
         id: "fever",
         type: "major",
-        title: "Fever in the Passenger Car",
-        description: "A passenger has developed a severe fever.",
+        title: lang("MAJOR_FEVER_TEXT"),
+        description: lang("MAJOR_FEVER_DESCRIPTION"),
         weight: 7,
         min_progress: 1,
         min_resources: {},
@@ -645,7 +671,7 @@ major_events = [
         sound: "sfx_negative",
         choices: [
             {
-                text: "Use medical supplies",
+                text: lang("MAJOR_FEVER_CHOICE_1_TEXT"),
                 min_resources: {medicine: 2},
                 max_resources: {},
                 min_progress: 0,
@@ -655,7 +681,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The treatment helps the passenger.",
+                        description: lang("MAJOR_FEVER_CHOICE_1_OUTCOME_1"),
                         effects: [
                             {resource: "medicine", amount: -2},
                             {resource: "crew_health", amount: 10}
@@ -666,7 +692,7 @@ major_events = [
                 ]
             },
             {
-                text: "Continue travelling",
+                text: lang("MAJOR_FEVER_CHOICE_2_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -676,7 +702,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The passenger's condition worsens.",
+                        description: lang("MAJOR_FEVER_CHOICE_2_OUTCOME_1"),
                         effects: [
                             {resource: "crew_health", amount: -20}
                         ],
@@ -686,7 +712,7 @@ major_events = [
                 ]
             },
             {
-                text: "Rest for the day",
+                text: lang("MAJOR_FEVER_CHOICE_3_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -696,7 +722,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The passenger recovers somewhat.",
+                        description: lang("MAJOR_FEVER_CHOICE_3_OUTCOME_1"),
                         effects: [
                             {resource: "food", amount: -3},
                             {resource: "crew_health", amount: 5}
@@ -708,11 +734,12 @@ major_events = [
             }
         ]
     },
+
     {
         id: "riverbank",
         type: "major",
-        title: "Signs Along the Riverbank",
-        description: "A maintained trail leads into the forest. Someone lives nearby.",
+        title: lang("MAJOR_RIVERBANK_TEXT"),
+        description: lang("MAJOR_RIVERBANK_DESCRIPTION"),
         weight: 7,
         min_progress: 3,
         min_resources: {},
@@ -722,7 +749,7 @@ major_events = [
         sound: "sfx_positive",
         choices: [
             {
-                text: "Observe from a respectful distance",
+                text: lang("MAJOR_RIVERBANK_CHOICE_1_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -732,7 +759,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The crew records the trail and leaves it undisturbed.",
+                        description: lang("MAJOR_RIVERBANK_CHOICE_1_OUTCOME_1"),
                         effects: [],
                         set_flag: ["marked_old_trail", "seen_riverbank"],
                         sound: "sfx_positive"
@@ -740,7 +767,7 @@ major_events = [
                 ]
             },
             {
-                text: "Continue without approaching",
+                text: lang("MAJOR_RIVERBANK_CHOICE_2_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -750,7 +777,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The train continues along the railway.",
+                        description: lang("MAJOR_RIVERBANK_CHOICE_2_OUTCOME_1"),
                         effects: [],
                         set_flag: "seen_riverbank",
                         sound: "sfx_positive"
@@ -759,11 +786,12 @@ major_events = [
             }
         ]
     },
+
     {
         id: "roaring",
         type: "major",
-        title: "The Roaring Madeira",
-        description: "The river's rapids shake the cargo as the train passes nearby.",
+        title: lang("MAJOR_ROARING_TEXT"),
+        description: lang("MAJOR_ROARING_DESCRIPTION"),
         weight: 7,
         min_progress: 4,
         min_resources: {},
@@ -773,7 +801,7 @@ major_events = [
         sound: "sfx_negative",
         choices: [
             {
-                text: "Secure the cargo",
+                text: lang("MAJOR_ROARING_CHOICE_1_TEXT"),
                 min_resources: {tools: 1},
                 max_resources: {},
                 min_progress: 0,
@@ -783,7 +811,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The cargo is secured.",
+                        description: lang("MAJOR_ROARING_CHOICE_1_OUTCOME_1"),
                         effects: [
                             {resource: "tools", amount: -2}
                         ],
@@ -793,7 +821,7 @@ major_events = [
                 ]
             },
             {
-                text: "Continue immediately",
+                text: lang("MAJOR_ROARING_CHOICE_2_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -803,18 +831,18 @@ major_events = [
                 outcomes: [
                     {
                         weight: 60,
-                        description: "Nothing is lost.",
+                        description: lang("MAJOR_ROARING_CHOICE_2_OUTCOME_1"),
                         effects: [],
                         set_flag: ["seen_madeira", "seen_roaring"],
                         sound: "sfx_positive"
                     },
                     {
                         weight: 40,
-                        description: "Some supplies fall from the cargo.",
+                        description: lang("MAJOR_ROARING_CHOICE_2_OUTCOME_2"),
                         effects: [
                             {resource: "food", amount: -3},
                             {resource: "water", amount: -2},
-							{resource: "tools", amount: -1},
+                            {resource: "tools", amount: -1}
                         ],
                         set_flag: ["seen_madeira", "seen_roaring"],
                         sound: "sfx_negative"
@@ -823,11 +851,12 @@ major_events = [
             }
         ]
     },
+
     {
         id: "old_camp",
         type: "major",
-        title: "The Old Work Camp",
-        description: "The crew discovers the remains of an old construction camp.",
+        title: lang("MAJOR_OLD_CAMP_TEXT"),
+        description: lang("MAJOR_OLD_CAMP_DESCRIPTION"),
         weight: 6,
         min_progress: 5,
         min_resources: {},
@@ -837,7 +866,7 @@ major_events = [
         sound: "sfx_positive",
         choices: [
             {
-                text: "Search the camp",
+                text: lang("MAJOR_OLD_CAMP_CHOICE_1_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -847,7 +876,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 65,
-                        description: "Useful equipment and food are recovered.",
+                        description: lang("MAJOR_OLD_CAMP_CHOICE_1_OUTCOME_1"),
                         effects: [
                             {resource: "food", amount: 3},
                             {resource: "tools", amount: 2}
@@ -857,14 +886,14 @@ major_events = [
                     },
                     {
                         weight: 25,
-                        description: "The camp has already been emptied.",
+                        description: lang("MAJOR_OLD_CAMP_CHOICE_1_OUTCOME_2"),
                         effects: [],
                         set_flag: "seen_old_camp",
                         sound: "sfx_negative"
                     },
                     {
                         weight: 10,
-                        description: "An accident injures a crew member.",
+                        description: lang("MAJOR_OLD_CAMP_CHOICE_1_OUTCOME_3"),
                         effects: [
                             {resource: "crew_health", amount: -5}
                         ],
@@ -874,7 +903,7 @@ major_events = [
                 ]
             },
             {
-                text: "Leave the camp",
+                text: lang("MAJOR_OLD_CAMP_CHOICE_2_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -884,7 +913,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The train continues its journey.",
+                        description: lang("MAJOR_OLD_CAMP_CHOICE_2_OUTCOME_1"),
                         effects: [],
                         set_flag: "seen_old_camp",
                         sound: "sfx_positive"
@@ -893,11 +922,12 @@ major_events = [
             }
         ]
     },
+
     {
         id: "river_bend",
         type: "major",
-        title: "A Quiet Bend in the Madeira",
-        description: "The river runs calm here. The barrels could use a refill.",
+        title: lang("MAJOR_RIVER_BEND_TEXT"),
+        description: lang("MAJOR_RIVER_BEND_DESCRIPTION"),
         weight: 7,
         min_progress: 3,
         min_resources: {},
@@ -907,7 +937,7 @@ major_events = [
         sound: "sfx_positive",
         choices: [
             {
-                text: "Boil the water before storing it",
+                text: lang("MAJOR_RIVER_BEND_CHOICE_1_TEXT"),
                 min_resources: {fuel: 1},
                 max_resources: {},
                 min_progress: 0,
@@ -917,7 +947,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The water is clean and the barrels are full.",
+                        description: lang("MAJOR_RIVER_BEND_CHOICE_1_OUTCOME_1"),
                         effects: [
                             {resource: "fuel", amount: -1},
                             {resource: "water", amount: 6}
@@ -928,7 +958,7 @@ major_events = [
                 ]
             },
             {
-                text: "Fill the barrels straight from the river",
+                text: lang("MAJOR_RIVER_BEND_CHOICE_2_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -938,7 +968,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 70,
-                        description: "The water looks clear enough. The barrels are full.",
+                        description: lang("MAJOR_RIVER_BEND_CHOICE_2_OUTCOME_1"),
                         effects: [
                             {resource: "water", amount: 6}
                         ],
@@ -947,7 +977,7 @@ major_events = [
                     },
                     {
                         weight: 30,
-                        description: "The water was foul. Most of it is unusable and the crew falls ill.",
+                        description: lang("MAJOR_RIVER_BEND_CHOICE_2_OUTCOME_2"),
                         effects: [
                             {resource: "water", amount: 2},
                             {resource: "crew_health", amount: -15}
@@ -958,7 +988,7 @@ major_events = [
                 ]
             },
             {
-                text: "Continue without stopping",
+                text: lang("MAJOR_RIVER_BEND_CHOICE_3_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -968,7 +998,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The train rolls on past the river.",
+                        description: lang("MAJOR_RIVER_BEND_CHOICE_3_OUTCOME_1"),
                         effects: [],
                         set_flag: ["seen_madeira", "seen_river_bend"],
                         sound: "sfx_positive"
@@ -977,11 +1007,12 @@ major_events = [
             }
         ]
     },
+
     {
         id: "derelict_loco",
         type: "major",
-        title: "The Derelict Locomotive",
-        description: "A rusted locomotive sits abandoned on a siding. Its tender may still hold fuel.",
+        title: lang("MAJOR_DERELICT_LOCO_TEXT"),
+        description: lang("MAJOR_DERELICT_LOCO_DESCRIPTION"),
         weight: 6,
         min_progress: 4,
         min_resources: {},
@@ -991,7 +1022,7 @@ major_events = [
         sound: "sfx_positive",
         choices: [
             {
-                text: "Salvage fuel from the tender",
+                text: lang("MAJOR_DERELICT_LOCO_CHOICE_1_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -1001,7 +1032,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 60,
-                        description: "The tender still holds plenty of usable fuel.",
+                        description: lang("MAJOR_DERELICT_LOCO_CHOICE_1_OUTCOME_1"),
                         effects: [
                             {resource: "fuel", amount: 8}
                         ],
@@ -1010,7 +1041,7 @@ major_events = [
                     },
                     {
                         weight: 25,
-                        description: "Mostly rust and ash, but a little fuel is salvaged.",
+                        description: lang("MAJOR_DERELICT_LOCO_CHOICE_1_OUTCOME_2"),
                         effects: [
                             {resource: "fuel", amount: 3}
                         ],
@@ -1019,7 +1050,7 @@ major_events = [
                     },
                     {
                         weight: 15,
-                        description: "Part of the wreck collapses. Someone gets hurt, but some fuel is saved.",
+                        description: lang("MAJOR_DERELICT_LOCO_CHOICE_1_OUTCOME_3"),
                         effects: [
                             {resource: "fuel", amount: 2},
                             {resource: "crew_health", amount: -5}
@@ -1030,7 +1061,7 @@ major_events = [
                 ]
             },
             {
-                text: "Leave it alone",
+                text: lang("MAJOR_DERELICT_LOCO_CHOICE_2_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -1040,7 +1071,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The crew moves on.",
+                        description: lang("MAJOR_DERELICT_LOCO_CHOICE_2_OUTCOME_1"),
                         effects: [],
                         set_flag: "seen_derelict_loco",
                         sound: "sfx_positive"
@@ -1049,11 +1080,12 @@ major_events = [
             }
         ]
     },
+
     {
         id: "boiler_pressure",
         type: "major",
-        title: "Dangerous Boiler Pressure",
-        description: "The boiler pressure is rising beyond its normal operating range. The engineer needs to act quickly.",
+        title: lang("MAJOR_BOILER_PRESSURE_TEXT"),
+        description: lang("MAJOR_BOILER_PRESSURE_DESCRIPTION"),
         weight: 7,
         min_progress: 2,
         min_resources: {},
@@ -1063,7 +1095,7 @@ major_events = [
         sound: "sfx_negative",
         choices: [
             {
-                text: "Vent the excess pressure",
+                text: lang("MAJOR_BOILER_PRESSURE_CHOICE_1_TEXT"),
                 min_resources: {fuel: 2},
                 max_resources: {},
                 min_progress: 0,
@@ -1073,7 +1105,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The engineer releases the pressure. The boiler returns to normal.",
+                        description: lang("MAJOR_BOILER_PRESSURE_CHOICE_1_OUTCOME_1"),
                         effects: [
                             {resource: "fuel", amount: -2}
                         ],
@@ -1083,7 +1115,7 @@ major_events = [
                 ]
             },
             {
-                text: "Reinforce the valve",
+                text: lang("MAJOR_BOILER_PRESSURE_CHOICE_2_TEXT"),
                 min_resources: {tools: 1},
                 max_resources: {},
                 min_progress: 0,
@@ -1093,7 +1125,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 80,
-                        description: "The reinforcement holds. The engine is safe.",
+                        description: lang("MAJOR_BOILER_PRESSURE_CHOICE_2_OUTCOME_1"),
                         effects: [
                             {resource: "tools", amount: -1}
                         ],
@@ -1102,7 +1134,7 @@ major_events = [
                     },
                     {
                         weight: 20,
-                        description: "The valve gives way during the repair. The train suffers damage.",
+                        description: lang("MAJOR_BOILER_PRESSURE_CHOICE_2_OUTCOME_2"),
                         effects: [
                             {resource: "tools", amount: -1},
                             {resource: "train_health", amount: -20}
@@ -1113,7 +1145,7 @@ major_events = [
                 ]
             },
             {
-                text: "Continue travelling and hope for the best",
+                text: lang("MAJOR_BOILER_PRESSURE_CHOICE_3_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -1123,7 +1155,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 65,
-                        description: "The pressure eventually stabilizes.",
+                        description: lang("MAJOR_BOILER_PRESSURE_CHOICE_3_OUTCOME_1"),
                         effects: [
                             {resource: "fuel", amount: -1}
                         ],
@@ -1132,7 +1164,7 @@ major_events = [
                     },
                     {
                         weight: 35,
-                        description: "The boiler overheats. The locomotive suffers serious damage.",
+                        description: lang("MAJOR_BOILER_PRESSURE_CHOICE_3_OUTCOME_2"),
                         effects: [
                             {resource: "fuel", amount: -1},
                             {resource: "train_health", amount: -15}
@@ -1144,11 +1176,12 @@ major_events = [
             }
         ]
     },
+
     {
         id: "track_washout",
         type: "major",
-        title: "A Washed-Out Railway",
-        description: "Heavy rain has damaged the ground supporting the tracks. The locomotive cannot proceed safely without a decision.",
+        title: lang("MAJOR_TRACK_WASHOUT_TEXT"),
+        description: lang("MAJOR_TRACK_WASHOUT_DESCRIPTION"),
         weight: 7,
         min_progress: 4,
         min_resources: {},
@@ -1158,7 +1191,7 @@ major_events = [
         sound: "sfx_negative",
         choices: [
             {
-                text: "Repair the damaged section",
+                text: lang("MAJOR_TRACK_WASHOUT_CHOICE_1_TEXT"),
                 min_resources: {tools: 2},
                 max_resources: {},
                 min_progress: 0,
@@ -1168,7 +1201,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 80,
-                        description: "The crew reinforces the railway successfully.",
+                        description: lang("MAJOR_TRACK_WASHOUT_CHOICE_1_OUTCOME_1"),
                         effects: [
                             {resource: "tools", amount: -2}
                         ],
@@ -1177,7 +1210,7 @@ major_events = [
                     },
                     {
                         weight: 20,
-                        description: "The ground gives way during the work. The locomotive is damaged.",
+                        description: lang("MAJOR_TRACK_WASHOUT_CHOICE_1_OUTCOME_2"),
                         effects: [
                             {resource: "tools", amount: -2},
                             {resource: "train_health", amount: -15}
@@ -1188,7 +1221,7 @@ major_events = [
                 ]
             },
             {
-                text: "Wait for the water to recede",
+                text: lang("MAJOR_TRACK_WASHOUT_CHOICE_2_TEXT"),
                 min_resources: {},
                 max_resources: {},
                 min_progress: 0,
@@ -1198,7 +1231,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 100,
-                        description: "The crew waits for safer conditions, consuming precious provisions.",
+                        description: lang("MAJOR_TRACK_WASHOUT_CHOICE_2_OUTCOME_1"),
                         effects: [
                             {resource: "food", amount: -2},
                             {resource: "water", amount: -1}
@@ -1209,7 +1242,7 @@ major_events = [
                 ]
             },
             {
-                text: "Cross slowly using extra fuel",
+                text: lang("MAJOR_TRACK_WASHOUT_CHOICE_3_TEXT"),
                 min_resources: {fuel: 2},
                 max_resources: {},
                 min_progress: 0,
@@ -1219,7 +1252,7 @@ major_events = [
                 outcomes: [
                     {
                         weight: 65,
-                        description: "The locomotive crosses the damaged section carefully.",
+                        description: lang("MAJOR_TRACK_WASHOUT_CHOICE_3_OUTCOME_1"),
                         effects: [
                             {resource: "fuel", amount: -2}
                         ],
@@ -1228,7 +1261,7 @@ major_events = [
                     },
                     {
                         weight: 35,
-                        description: "The weakened ground damages the locomotive during the crossing.",
+                        description: lang("MAJOR_TRACK_WASHOUT_CHOICE_3_OUTCOME_2"),
                         effects: [
                             {resource: "fuel", amount: -2},
                             {resource: "train_health", amount: -20}
@@ -1242,12 +1275,10 @@ major_events = [
     }
 ];
 
+
 // ============================================================
 // EVENT SOUND SYSTEM
 // ============================================================
-// Assign a sound by its exact asset name, as a string:
-// sound: "sfx_rain"
-// Leave sound: "" for silence.
 
 play_event_sound = function(_sound_name) {
 
@@ -1257,7 +1288,6 @@ play_event_sound = function(_sound_name) {
 
     var sound_asset = -1;
 
-    // Map the string to a direct Sound Asset reference.
     switch (_sound_name) {
 
         case "sfx_positive":
@@ -1292,11 +1322,11 @@ play_event_sound = function(_sound_name) {
     }
 };
 
+
 // ============================================================
 // RESOURCE SYSTEM
 // ============================================================
 
-// Adds a change to the on-screen feedback list (merges entries of the same resource)
 log_resource_change = function(_resource, _amount) {
 
     for (var i = 0; i < array_length(event_feedback); i++) {
@@ -1318,10 +1348,9 @@ log_resource_change = function(_resource, _amount) {
 
 begin_feedback = function() {
     event_feedback = [];
-    feedback_timer = 6;
+    feedback_timer = 8;
 };
 
-// Changes one resource, applies limits, logs the real change. Returns the real change.
 change_resource = function(_resource, _amount) {
 
     if (!variable_struct_exists(resources, _resource)) {
@@ -1350,9 +1379,6 @@ change_resource = function(_resource, _amount) {
     return actual_change;
 };
 
-// Supports fixed amounts or random ranges:
-// {resource: "fuel", amount: -1}
-// {resource: "fuel", min_amount: 2, max_amount: 6}
 apply_effects = function(_effects) {
 
     for (var i = 0; i < array_length(_effects); i++) {
@@ -1375,7 +1401,7 @@ apply_effects = function(_effects) {
     }
 };
 
-// Player actions: medicine heals crew, tools repair train
+// Player actions
 can_use_medicine = function() {
     return (travel_state == "travelling" || travel_state == "major_event")
         && resources.medicine >= 1
@@ -1406,7 +1432,7 @@ use_tools = function() {
     return true;
 };
 
-// HUD layout helpers (shared by Draw GUI and Step)
+// HUD layout helpers
 get_resource_chip = function(_index) {
     return {
         x: 16 + _index * 130,
@@ -1435,6 +1461,7 @@ get_action_button = function(_index) {
     };
 };
 
+
 // ============================================================
 // CUTSCENE HELPERS
 // ============================================================
@@ -1456,6 +1483,7 @@ begin_finale = function() {
     audio_play_sound(sfx_trainstart, true, false, 0.7);
 };
 
+
 // ============================================================
 // EVENT FLOW
 // ============================================================
@@ -1475,7 +1503,6 @@ select_available_event = function(_events) {
         total_weight += candidate.weight;
     }
 
-    // If only the immediately previous event is available, allow it again.
     if (array_length(available) == 0) {
         for (var j = 0; j < array_length(_events); j++) {
             var fallback_event = _events[j];
@@ -1536,7 +1563,6 @@ choose_weighted = function(_outcomes) {
     return _outcomes[array_length(_outcomes) - 1];
 };
 
-// Accepts "", one flag name, or an array of flag names.
 set_world_flag = function(_flag) {
 
     if (is_undefined(_flag)) return;
@@ -1557,6 +1583,7 @@ set_world_flag = function(_flag) {
     }
 };
 
+
 // ============================================================
 // GAME OVER CHECKS
 // ============================================================
@@ -1565,7 +1592,7 @@ check_event_requirements = function(_event) {
 
     if (variable_struct_exists(_event, "requires_repair") && _event.requires_repair) {
         if (resources.tools <= 0) {
-            trigger_game_over("A repair was needed, but no tools were available.");
+            trigger_game_over("REASON_NO_TOOLS");
             return false;
         }
     }
@@ -1578,12 +1605,12 @@ check_game_over = function() {
     if (game_over || travel_state == "death") return;
 
     if (resources.crew_health <= 0) {
-        trigger_game_over("The crew's health has reached zero.");
+        trigger_game_over("REASON_CREW_ZERO");
         return;
     }
 
     if (resources.train_health <= 0) {
-        trigger_game_over("The locomotive was wrecked beyond repair.");
+        trigger_game_over("REASON_TRAIN_ZERO");
         return;
     }
 };
@@ -1599,9 +1626,10 @@ check_coal_game_over = function() {
     }
 
     if (coal_zero_events >= 2) {
-        trigger_game_over("The locomotive ran out of fuel for two consecutive events.");
+        trigger_game_over("REASON_NO_FUEL");
     }
 };
+
 
 // ============================================================
 // UPKEEP
@@ -1609,10 +1637,8 @@ check_coal_game_over = function() {
 
 consume_upkeep = function() {
 
-    // Coal is consumed after every completed event.
     change_resource("fuel", -coal_per_event);
 
-    // Food and water are consumed every ration_interval events.
     events_since_ration++;
 
     if (events_since_ration >= ration_interval) {
@@ -1621,25 +1647,33 @@ consume_upkeep = function() {
         var short_food = (resources.food < ration_food);
         var short_water = (resources.water < ration_water);
 
-        // Consume whatever remains; values cannot go below zero.
         change_resource("food", -ration_food);
         change_resource("water", -ration_water);
 
         if (short_food || short_water) {
-            var missing = "food";
-
-            if (short_food && short_water) {
-                missing = "food and water";
-            } else if (short_water) {
-                missing = "water";
-            }
 
             if (ration_warning) {
-                trigger_game_over("The crew ran out of " + missing + ".");
+
+                if (short_food && short_water) {
+                    trigger_game_over("REASON_NO_FOOD_AND_WATER");
+                } else if (short_food) {
+                    trigger_game_over("REASON_NO_FOOD");
+                } else {
+                    trigger_game_over("REASON_NO_WATER");
+                }
+
             } else {
                 ration_warning = true;
-                ration_warning_text = missing;
+
+                if (short_food && short_water) {
+                    ration_warning_text = "REASON_NO_FOOD_AND_WATER";
+                } else if (short_food) {
+                    ration_warning_text = "REASON_NO_FOOD";
+                } else {
+                    ration_warning_text = "REASON_NO_WATER";
+                }
             }
+
         } else {
             ration_warning = false;
             ration_warning_text = "";
@@ -1665,6 +1699,7 @@ complete_event = function() {
     travel_elapsed = 0;
     next_event_time = random_range(8, 15);
 };
+
 
 // ============================================================
 // EVENT GENERATOR
@@ -1695,12 +1730,10 @@ trigger_event = function() {
 
     last_event_id = selected.id;
 
-    // Requirements that may start the death sequence before the event begins.
     if (!check_event_requirements(selected)) {
         return;
     }
 
-    // Event sound plays when the event appears (minor or major).
     if (variable_struct_exists(selected, "sound")) {
         play_event_sound(selected.sound);
     }
@@ -1720,11 +1753,12 @@ trigger_event = function() {
         }
 
         event_message = selected.title + ": " + selected.description;
-        message_timer = 6;
+        message_timer = 8;
 
         complete_event();
     }
 };
+
 
 // ============================================================
 // CHOICE RESOLVER
@@ -1748,7 +1782,6 @@ resolve_choice = function(_choice_index) {
     var outcome = choose_weighted(choice.outcomes);
     if (is_undefined(outcome)) return;
 
-    // Outcome sound takes priority; otherwise use the selected choice's sound.
     if (variable_struct_exists(outcome, "sound") && outcome.sound != "") {
         play_event_sound(outcome.sound);
     } else if (variable_struct_exists(choice, "sound")) {
@@ -1765,14 +1798,13 @@ resolve_choice = function(_choice_index) {
     complete_event();
 };
 
+
 // ============================================================
 // GAME STATE
 // ============================================================
 
 trigger_game_over = function(_reason) {
 
-    // Start the death animation once. The Step Event should set game_over=true
-    // and travel_state="game_over" after the death animation finishes.
     if (game_over || game_won || travel_state == "death") {
         return;
     }
@@ -1806,6 +1838,28 @@ trigger_win = function(_ending) {
 
     show_debug_message("JOURNEY WON: " + win_ending);
 };
+
+
+// ============================================================
+// LANGUAGE
+// ============================================================
+
+change_language = function() {
+
+    if (global.current_lingo == "en") {
+        language_import("txt_strings_pt_br.json");
+        global.current_lingo = "pt_br";
+
+    } else if (global.current_lingo == "pt_br") {
+        language_import("txt_strings_en.json");
+        global.current_lingo = "en";
+    }
+};
+
+
+// ============================================================
+// START GAME
+// ============================================================
 
 start_game = function() {
 

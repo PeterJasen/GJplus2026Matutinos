@@ -7,9 +7,14 @@ if (travel_state == "menu") {
     var menu_gui_w = display_get_gui_width();
     var menu_gui_h = display_get_gui_height();
 
+	// Play button
     var menu_button_left = menu_gui_w / 2 - 120;
     var menu_button_top = menu_gui_h / 2 + 30;
-
+	
+	// Language button
+	var language_button_left = menu_gui_w / 2 - 120;
+    var language_button_top = menu_gui_h / 2 + 150;
+	
     var menu_mouse_x = device_mouse_x_to_gui(0);
     var menu_mouse_y = device_mouse_y_to_gui(0);
 
@@ -18,6 +23,16 @@ if (travel_state == "menu") {
         && menu_mouse_x <= menu_button_left + 240
         && menu_mouse_y >= menu_button_top
         && menu_mouse_y <= menu_button_top + 64;
+		
+	var clicked_language = mouse_check_button_pressed(mb_left)
+		&& menu_mouse_x >= language_button_left
+        && menu_mouse_x <= language_button_left + 320
+        && menu_mouse_y >= language_button_top
+        && menu_mouse_y <= language_button_top + 64;
+
+	if clicked_language {
+		change_language()
+	};
 
     if (keyboard_check_pressed(vk_enter)
         || keyboard_check_pressed(vk_space)
@@ -64,7 +79,7 @@ if (travel_state == "intro") {
 
         travel_state = "travelling";
         travel_elapsed = 0;
-        next_event_time = random_range(8, 15);
+        next_event_time = random_range(8, 16);
 
         // Stop intro sound and start gameplay audio
         audio_stop_all();
@@ -77,9 +92,7 @@ if (travel_state == "intro") {
     exit;
 }
 
-
 // Finale: the train rolls off to the right, then the victory screen
-
 if (travel_state == "finale") {
 
     // Space or Enter skips the animation
@@ -115,59 +128,6 @@ if (travel_state == "finale") {
     exit;
 }
 
-
-// ============================================================
-// DEATH ANIMATION
-// ============================================================
-
-if (travel_state == "death") {
-
-    // Skip death animation with Space or Enter
-    if (keyboard_check_pressed(vk_space)
-        || keyboard_check_pressed(vk_enter)) {
-
-        death_timer = death_duration;
-
-    } else {
-
-        death_timer += delta_time / 1000000;
-    }
-
-    var death_t = clamp(death_timer / death_duration, 0, 1);
-
-    // Shake the train while it comes to a stop
-    var shake_strength = (1 - death_t) * 7;
-
-    if (instance_exists(obj_train_visual)) {
-
-        var train_id = instance_find(obj_train_visual, 0);
-
-        if (train_id != noone) {
-
-            train_id.x = death_start_x
-                + sin(death_timer * 50) * shake_strength;
-        }
-    }
-
-    // Finish the animation
-    if (death_t >= 1) {
-
-        // Restore the train's final position
-        if (instance_exists(obj_train_visual)) {
-
-            var stopped_train = instance_find(obj_train_visual, 0);
-
-            if (stopped_train != noone) {
-                stopped_train.x = death_start_x;
-            }
-        }
-
-        game_over = true;
-        travel_state = "game_over";
-    }
-
-    exit;
-}
 
 // ============================================================
 // DEATH ANIMATION

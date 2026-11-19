@@ -4,10 +4,17 @@ draw_set_halign(fa_left);
 draw_set_valign(fa_top);
 
 if (travel_state == "menu") {
+	draw_set_font(fnt_menu)
     var menu_gui_w = display_get_gui_width();
     var menu_gui_h = display_get_gui_height();
+	
+	// Play check
     var menu_button_left = menu_gui_w / 2 - 120;
     var menu_button_top = menu_gui_h / 2 + 30;
+	
+	// Language check
+	var language_button_left = menu_gui_w / 2 - 160;
+	var language_button_top = menu_gui_h / 2 + 150;
 
     draw_set_alpha(1);
     draw_set_color(c_black);
@@ -25,7 +32,12 @@ if (travel_state == "menu") {
     draw_set_color(c_black);
     draw_text(menu_gui_w / 2, menu_button_top + 32, lang("MENU_PLAY"));
     draw_set_color(c_gray);
-    draw_text(menu_gui_w / 2, menu_button_top + 98, lang("MENU_CLICK_PLAY");
+    draw_text(menu_gui_w / 2, menu_button_top + 98, lang("MENU_CLICK_PLAY"));
+	
+	draw_set_color(c_gray);
+    draw_rectangle(language_button_left, language_button_top, language_button_left + 320, language_button_top + 40, false);
+	draw_set_color(c_black);
+	draw_text(menu_gui_w / 2, menu_button_top + 138, lang("MENU_LANGUAGE"));
 
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
@@ -40,7 +52,8 @@ if (travel_state == "menu") {
 // ============================================================
 
 if (travel_state == "intro" || travel_state == "finale") {
-
+	
+	draw_set_font(fnt_menu)
     var gui_w = display_get_gui_width();
     var gui_h = display_get_gui_height();
 
@@ -52,7 +65,7 @@ if (travel_state == "intro" || travel_state == "finale") {
     draw_text(
         gui_w / 2,
         gui_h - 30,
-        "PRESS SPACE OR ENTER TO SKIP"
+        lang("MENU_SKIP")
     );
 
     draw_set_halign(fa_left);
@@ -66,7 +79,8 @@ if (travel_state == "intro" || travel_state == "finale") {
 // ============================================================
 
 if (travel_state == "death") {
-
+	
+	draw_set_font(fnt_menu)
     var gui_w = display_get_gui_width();
     var gui_h = display_get_gui_height();
 
@@ -92,7 +106,7 @@ if (travel_state == "death") {
     draw_text(
         gui_w / 2,
         gui_h - 35,
-        "PRESS SPACE OR ENTER TO SKIP"
+        lang("MENU_SKIP")
     );
 
     draw_set_halign(fa_left);
@@ -106,12 +120,13 @@ if (travel_state == "finale") {
     exit;
 }
 
+draw_set_font(fnt_ingame)
 var chips = [
-    {label: "FOOD",     value: resources.food,     warn: ration_food},
-    {label: "WATER",    value: resources.water,    warn: ration_water},
-    {label: "FUEL",     value: resources.fuel,     warn: 3},
-    {label: "MEDICINE", value: resources.medicine, warn: 0},
-    {label: "TOOLS",    value: resources.tools,    warn: 0}
+    {label: lang("GAME_FOOD"),     value: resources.food,     warn: ration_food},
+    {label: lang("GAME_WATER"),    value: resources.water,    warn: ration_water},
+    {label: lang("GAME_FUEL"),     value: resources.fuel,     warn: 3},
+    {label: lang("GAME_MEDICINE"), value: resources.medicine, warn: 0},
+    {label: lang("GAME_TOOLS"),    value: resources.tools,    warn: 0}
 ];
 
 draw_set_halign(fa_left);
@@ -141,11 +156,11 @@ for (var i = 0; i < array_length(chips); i++) {
 
 // ---------- Health bars + action buttons ----------
 for (var i = 0; i < 2; i++) {
-
+	draw_set_font(fnt_ingame)
     var bar = get_health_bar(i);
     var hp     = (i == 0) ? resources.crew_health : resources.train_health;
     var hp_max = (i == 0) ? crew_health_max : train_health_max;
-    var hp_name = (i == 0) ? "CREW" : "TRAIN";
+    var hp_name = (i == 0) ? lang("MENU_CREW") : lang("MENU_TRAIN");
     var hp_pct = clamp(hp / hp_max, 0, 1);
 
     // Bar background
@@ -165,14 +180,14 @@ for (var i = 0; i < 2; i++) {
 
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
-    draw_text(bar.x + bar.w / 2, bar.y + bar.h / 2, hp_name + " HEALTH  " + string(hp) + "/" + string(hp_max));
+    draw_text(bar.x + bar.w / 2, bar.y + bar.h / 2, hp_name + " " + lang("MENU_HEALTH") + "  " + string(hp) + "/" + string(hp_max));
 
     // Button: medicine heals the crew, tools repair the train
     var btn = get_action_button(i);
     var btn_enabled = (i == 0) ? can_use_medicine() : can_use_tools();
     var btn_label = (i == 0)
-        ? "USE MEDICINE [M]  +" + string(heal_amount)
-        : "USE TOOL [R]  +" + string(heal_amount);
+        ? lang("MENU_USE_MEDICINE") + string(heal_amount)
+        : lang("MENU_USE_TOOL") + string(heal_amount);
 
     draw_set_alpha(0.8);
     draw_set_color(btn_enabled ? c_dkgray : c_black);
@@ -194,6 +209,7 @@ draw_set_alpha(1);
 // ---------- Journey meter (bottom of the screen) ----------
 if (travel_state == "travelling" || travel_state == "major_event") {
 
+	draw_set_font(fnt_ingame)
     var meter_x = 32;
     var meter_w = display_get_gui_width() - 64;
     var meter_h = 20;
@@ -221,7 +237,7 @@ if (travel_state == "travelling" || travel_state == "major_event") {
     draw_text(
         meter_x + meter_w / 2,
         meter_y + meter_h / 2,
-        "JOURNEY  " + string(floor(journey_pct * 100)) + "%"
+        lang("MENU_JOURNEY") + "  " + string(floor(journey_pct * 100)) + "%"
     );
 
     draw_set_halign(fa_left);
@@ -231,7 +247,7 @@ if (travel_state == "travelling" || travel_state == "major_event") {
 
 // ---------- Upkeep info / last-chance warning ----------
 if (travel_state == "travelling" || travel_state == "major_event") {
-
+	draw_set_font(fnt_ingame)
     var events_to_ration = ration_interval - events_since_ration;
 
     if (ration_warning) {
@@ -241,9 +257,9 @@ if (travel_state == "travelling" || travel_state == "major_event") {
         draw_text(
             16,
             150,
-            "LAST CHANCE! Short on " + ration_warning_text + ". Cover -"
-            + string(ration_food) + " food, -" + string(ration_water) + " water in "
-            + string(events_to_ration) + " event(s) or the journey ends."
+            lang("MENU_LAST_CHANCE_1") + ration_warning_text + lang("MENU_LAST_CHANCE_2")
+            + string(ration_food) + lang("MENU_LAST_CHANCE_3") + string(ration_water) + lang("MENU_LAST_CHANCE_4")
+            + string(events_to_ration) + lang("MENU_LAST_CHANCE_5")
         );
 
     } else {
@@ -252,9 +268,9 @@ if (travel_state == "travelling" || travel_state == "major_event") {
         draw_text(
             16,
             150,
-            "Every event: -" + string(coal_per_event) + " fuel   |   Rations in "
-            + string(events_to_ration) + " event(s): -"
-            + string(ration_food) + " food, -" + string(ration_water) + " water"
+            lang("MENU_ROUTINE_1") + string(coal_per_event) + lang("MENU_ROUTINE_2")
+            + string(events_to_ration) + lang("MENU_ROUTINE_3")
+            + string(ration_food) + lang("MENU_ROUTINE_4") + string(ration_water) + lang("MENU_ROUTINE_5")
         );
     }
 
@@ -263,13 +279,13 @@ if (travel_state == "travelling" || travel_state == "major_event") {
 
 // ---------- Travel status ----------
 if (travel_state == "travelling") {
-
-    draw_text(16, 186, "TRAVELLING...");
+	draw_set_font(fnt_ingame)
+    draw_text(16, 186, lang("MENU_TRAVELLING"));
 
     draw_text(
         16,
         214,
-        "Next event in: " +
+        lang("MENU_NEXT_EVENT") +
         string_format(max(0, next_event_time - travel_elapsed), 1, 1)
     );
 }
@@ -291,7 +307,7 @@ var notification_padding = 14;
 // ============================================================
 
 if (travel_state == "major_event" && !is_undefined(current_event)) {
-
+	draw_set_font(fnt_ingame)
     var content_w = notification_w - notification_padding * 2;
 
     var title_h = string_height_ext(current_event.title, -1, content_w);
@@ -305,7 +321,7 @@ if (travel_state == "major_event" && !is_undefined(current_event)) {
         var choice_text = string(i + 1) + ". " + choice.text;
 
         if (!event_is_available(choice)) {
-            choice_text += " [Unavailable]";
+            choice_text += lang("MENU_UNAVAILABLE");
         }
 
         choices_h += string_height_ext(choice_text, -1, content_w) + 8;
@@ -380,7 +396,7 @@ if (travel_state == "major_event" && !is_undefined(current_event)) {
             draw_set_color(c_black);
         } else {
             draw_set_color(c_gray);
-            choice_text += " [Unavailable]";
+            choice_text += lang("MENU_UNAVAILABLE");
         }
 
         draw_text_ext(
@@ -404,7 +420,7 @@ if (travel_state == "major_event" && !is_undefined(current_event)) {
 // ============================================================
 
 if (message_timer > 0) {
-
+	draw_set_font(fnt_ingame)
     var box_padding = 14;
     var box_w = notification_w;
     var text_w = box_w - box_padding * 2;
@@ -456,7 +472,7 @@ if (message_timer > 0) {
 // ============================================================
 
 if (feedback_timer > 0) {
-
+	draw_set_font(fnt_ingame)
     var feedback_count = array_length(event_feedback);
 
     var feedback_padding = 14;
@@ -499,7 +515,7 @@ if (feedback_timer > 0) {
     draw_text(
         notification_x + feedback_padding,
         notification_y + feedback_padding + 5,
-        "RESOURCE CHANGES"
+        lang("MENU_RESOURCE_CHANGES")
     );
 
     // Separator
@@ -520,20 +536,16 @@ if (feedback_timer > 0) {
         draw_text(
             notification_x + feedback_padding,
             notification_y + feedback_padding + 43,
-            "No resources changed."
+            lang("MENU_NO_RESOURCES_CHANGED")
         );
 
     } else {
-
+		draw_set_font(fnt_ingame)
         for (var i = 0; i < feedback_count; i++) {
 
             var change = event_feedback[i];
 
-            var resource_name = string_replace(
-                string_upper(change.resource),
-                "_",
-                " "
-            );
+            var resource_name = string_upper(lang("RESOURCE_" + string_upper(change.resource)));
 
             var amount = change.amount;
 
@@ -589,6 +601,7 @@ draw_set_valign(fa_top);
 // DEBUG MENU (hidden: toggle with the ~ key)
 // ============================================================
 if (debug_menu_open && !game_over && !game_won) {
+	draw_set_font(fnt_menu)
     var debug_gui_w = display_get_gui_width();
     var debug_button_left = debug_gui_w - 255;
     var debug_button_top = 54;
@@ -653,6 +666,7 @@ if (debug_menu_open && !game_over && !game_won) {
 
 if (game_over) {
 
+	draw_set_font(fnt_menu)
     var game_over_gui_w = display_get_gui_width();
     var game_over_gui_h = display_get_gui_height();
 
@@ -718,7 +732,7 @@ if (game_over) {
     draw_text(
         game_over_gui_w / 2,
         panel_y + 55,
-        "JOURNEY ENDED"
+        lang("MENU_JOURNEY_ENDED")
     );
 
     draw_set_color(c_white);
@@ -736,7 +750,7 @@ if (game_over) {
     draw_text(
         game_over_gui_w / 2,
         panel_y + 210,
-        "The expedition has failed."
+        lang("MENU_EXPEDITION_FAILED")
     );
 
     // Replay button
@@ -758,7 +772,7 @@ if (game_over) {
     draw_text(
         game_over_gui_w / 2,
         replay_button_top + 27,
-        "REPLAY"
+        lang("MENU_REPLAY")
     );
 
     draw_set_halign(fa_left);
@@ -769,6 +783,7 @@ if (game_over) {
 
 if (game_won) {
 
+	draw_set_font(fnt_menu)
     var win_gui_w = display_get_gui_width();
     var win_gui_h = display_get_gui_height();
 
@@ -834,7 +849,7 @@ if (game_won) {
     draw_text(
         win_gui_w / 2,
         panel_y + 55,
-        "JOURNEY COMPLETE"
+        lang("MENU_JOURNEY_COMPLETED")
     );
 
     draw_set_color(c_white);
@@ -852,7 +867,7 @@ if (game_won) {
     draw_text(
         win_gui_w / 2,
         panel_y + 210,
-        "The expedition was successful."
+        lang("MENU_EXPEDITION_SUCCESSFUL")
     );
 
     // Replay button
@@ -874,7 +889,7 @@ if (game_won) {
     draw_text(
         win_gui_w / 2,
         replay_button_top + 27,
-        "REPLAY"
+        lang("MENU_REPLAY")
     );
 
     draw_set_halign(fa_left);
